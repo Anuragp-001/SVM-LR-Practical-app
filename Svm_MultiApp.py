@@ -3,7 +3,14 @@ import pandas as pd
 import numpy as np 
 import joblib 
 from sklearn.preprocessing import StandardScaler
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
+uri = "mongodb+srv://Anurag:<db_password>@cluster0.bagh3cm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+# Create a new client and connect to the server
+client = MongoClient(uri, server_api=ServerApi('1'))
+db = client["Iris"]
+collection = db["iris prediction"]
 
 # Writing the function to load the model 
 def load_model():
@@ -52,7 +59,8 @@ def main():
         # Imagine you have a big box of toys (that's called user_data), and each toy has a name tag on it. But sometimes the name tags are written in a special computer language that's hard to read.
         # This code is like having a helpful friend who goes through your toy box and rewrites all the name tags in regular English so everyone can understand them better.
         user_data = {key: int(value) if isinstance(value , np.integer) else float(value) if isinstance(value , np.floating) else value for key , value in user_data.items()}   
-                                                                                                                     
+
+    collection.insert_one(user_data)                                                                                                               
 #To execute the above url function line 
 if __name__ == "__main__" :
     main()
